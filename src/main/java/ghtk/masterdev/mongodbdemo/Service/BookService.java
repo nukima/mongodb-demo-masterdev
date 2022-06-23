@@ -1,6 +1,8 @@
 package ghtk.masterdev.mongodbdemo.Service;
 
 import ghtk.masterdev.mongodbdemo.Model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -9,7 +11,8 @@ import java.util.Optional;
 
 @Service
 public interface BookService{
-    List<Book> findAll();
+    // List all books (pageable)
+    Page<Book> findAll(Pageable pageable);
     // Find book by id
     Optional<Book> findById(String id);
     // Fulltext search

@@ -18,5 +18,4 @@ public interface BookRepository extends MongoRepository<Book, String> {
     Book save(Book book);
     // Delete book
     void deleteBy_id(String id);
-
 }

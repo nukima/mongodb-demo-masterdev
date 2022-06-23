@@ -3,6 +3,10 @@ package ghtk.masterdev.mongodbdemo.Controller;
 import ghtk.masterdev.mongodbdemo.Model.Book;
 import ghtk.masterdev.mongodbdemo.Service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,10 +19,10 @@ import java.util.Objects;
 public class BookController {
     @Autowired
     private BookService bookService;
-    // List all books
+    // List all books (pageable)
     @GetMapping("/books")
-    public List<Book> getAllBooks() {
-        return bookService.findAll();
+    public Page<Book> listBooksPageable(@PageableDefault(sort = "pubDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        return bookService.findAll(pageable);
     }
 
     // Find book by id
@@ -50,6 +54,7 @@ public class BookController {
     public List<Book> saveAllBooks(@RequestBody List<Book> books) {
         return bookService.saveAll(books);
     }
+
     //Partial update
     @PatchMapping("/books/{id}")
     public void partialUpdate(@PathVariable String id, @RequestBody Book book) throws Exception {
