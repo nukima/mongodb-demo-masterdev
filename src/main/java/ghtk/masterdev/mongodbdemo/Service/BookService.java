@@ -18,6 +18,10 @@ public interface BookService{
     List<Book> findByPubDateBetween(String startDate, String endDate);
     // Save book
     Book save(Book book);
+    //saveAll
+    List<Book> saveAll(List<Book> books);
     // Delete book
     void deleteBy_id(String id);
+    //partial update
+    void partialUpdate(String id, String fieldName, Object fieldValue);
 }

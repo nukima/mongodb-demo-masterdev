@@ -5,14 +5,11 @@ import ghtk.masterdev.mongodbdemo.Repository.BookRepository;
 import ghtk.masterdev.mongodbdemo.Service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
+import org.springframework.data.mongodb.core.query.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.lang.annotation.Annotation;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,8 +60,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> saveAll(List<Book> books) {
+        return bookRepository.saveAll(books);
+    }
+
+    @Override
     public void deleteBy_id(String id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void partialUpdate(String id, String fieldName, Object fieldValue) {
+        mongoTemplate.findAndModify(
+                BasicQuery.query(Criteria.where("_id").is(id)),
+                BasicUpdate.update(fieldName, fieldValue),
+                FindAndModifyOptions.none(),
+                Book.class
+        );
     }
 
 }
